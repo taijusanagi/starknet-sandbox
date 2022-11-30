@@ -1,11 +1,13 @@
-import { createSession, SessionAccount, SignedSession } from "@argent/x-sessions";
+import { createSession, SessionAccount, SignedSession, supportsSessions } from "@argent/x-sessions";
 import { getStarknet } from "get-starknet";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AccountInterface, Contract, ec, Signer } from "starknet";
 import { toFelt } from "starknet/dist/utils/number";
 
 import contractAbi from "../../contracts/build/main_abi.json";
 import deployments from "../../contracts/deployments.json";
+
+const { genKeyPair, getStarkKey, getKeyPair } = ec;
 
 declare global {
   interface Window {
@@ -28,11 +30,11 @@ interface RequestSession {
 }
 
 export default function Home() {
-  const [provider, setProvider] = useState<AccountInterface>();
-  const [address, setAddress] = useState("");
+  const [account, setAccount] = useState<AccountInterface>();
+  const [sessionAccount, setSessionAccount] = useState<SessionAccount>();
+
   const [balance, setBalance] = useState("0");
-  const [sessionSigner, setSessionSigner] = useState<Signer>();
-  const [signedSession, setSignedSession] = useState<SignedSession>();
+  const [isSupportsSession, setIsSupportsSession] = useState(false);
 
   const [network, setNetwork] = useState<Network>("testnet");
 
@@ -42,80 +44,70 @@ export default function Home() {
       // const starknet = await connect();
       await starknet?.enable();
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      setAddress(starknet?.selectedAddress as string);
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      setProvider(starknet?.account);
+      setAccount(starknet?.account);
     } catch (e) {
       console.error(e);
     }
   };
 
   const increaseBalance = async () => {
-    if (!provider) {
-      throw new Error("provider is not defined");
+    if (!account) {
+      throw new Error("account is not defined");
     }
 
-    if (isSessionEnabled) {
-      if (!signedSession) {
-        throw new Error("signed session is not defined");
-      }
-      const sessionAccount = new SessionAccount(provider, provider.address, sessionSigner, signedSession);
+    if (sessionAccount) {
       const contract = new Contract(contractAbi as any, deployments[network], sessionAccount);
       await contract.increase_balance(toFelt(1));
     } else {
-      const contract = new Contract(contractAbi as any, deployments[network], provider);
+      const contract = new Contract(contractAbi as any, deployments[network], account);
       await contract.increase_balance(toFelt(1));
     }
   };
 
   const getBalance = async () => {
-    if (!provider) {
-      throw new Error("provider is not defined");
+    if (!account) {
+      throw new Error("account is not defined");
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const contract = new Contract(contractAbi as any, deployments[network], provider);
+    const contract = new Contract(contractAbi as any, deployments[network], account);
     const { res } = await contract.get_balance();
     setBalance(res.toString());
   };
 
   const enableSessionKey = async () => {
-    if (!provider) {
-      throw new Error("provider is not defined");
+    if (!account) {
+      throw new Error("account is not defined");
     }
     let sessionSigner;
     const savedSessionSignerPk = window.localStorage.getItem("session-key-pk");
     if (!savedSessionSignerPk) {
-      const temp = new Signer() as any;
-      window.localStorage.setItem("session-key-pk", temp.keyPair.priv.toString());
-      sessionSigner = temp as Signer;
+      sessionSigner = genKeyPair();
+      window.localStorage.setItem("session-key-pk", sessionSigner.priv.toString());
     } else {
-      const keyPair = ec.getKeyPair(savedSessionSignerPk);
-      sessionSigner = new Signer(keyPair);
+      sessionSigner = getKeyPair(savedSessionSignerPk);
     }
-    const sessionSignerPubKey = await sessionSigner.getPubKey();
-    console.log(sessionSignerPubKey);
-    const requestSession: RequestSession = {
-      key: await sessionSignerPubKey,
-      expires: Math.floor((Date.now() + 1000 * 60 * 60 * 24) / 1000),
-      policies: [
-        {
-          contractAddress: deployments[network],
-          selector: "increase_balance",
-        },
-      ],
-    };
-    const signedSession = await createSession(requestSession, provider);
-    setSessionSigner(sessionSigner);
-    setSignedSession(signedSession);
+    const signedSession = await createSession(
+      {
+        key: getStarkKey(sessionSigner),
+        expires: Math.floor((Date.now() + 1000 * 60 * 60 * 24) / 1000),
+        policies: [
+          {
+            contractAddress: deployments[network],
+            selector: "increase_balance",
+          },
+        ],
+      },
+      account
+    );
+    setSessionAccount(new SessionAccount(account, account.address, sessionSigner, signedSession));
   };
 
-  const isConnected = useMemo(() => {
-    return !!provider;
-  }, [provider]);
-
-  const isSessionEnabled = useMemo(() => {
-    return !!sessionSigner && !!signedSession;
-  }, [sessionSigner, signedSession]);
+  useEffect(() => {
+    if (!account) {
+      return;
+    }
+    supportsSessions(account.address, account).then((result) => setIsSupportsSession(result));
+  }, [account]);
 
   return (
     <div>
@@ -125,20 +117,21 @@ export default function Home() {
         <option value="localhost">Localhost</option>
       </select>
       <p>Account</p>
-      <button disabled={isConnected} onClick={connectWallet}>
+      <button disabled={!!account} onClick={connectWallet}>
         connect
       </button>
-      <p>address: {address}</p>
-      <p>isConnected: {isConnected.toString()}</p>
 
-      {!provider && <p>Please connect argent x wallet</p>}
-      {provider && (
+      {!account && <p>Please connect argent x wallet</p>}
+      {account && (
         <div>
+          <p>address: {account.address}</p>
+          <p>isConnected: {(!!account).toString()}</p>
+          <p>isSupportsSession: {(!!isSupportsSession).toString()}</p>
           <p>Session Key</p>
-          <button disabled={isSessionEnabled} onClick={enableSessionKey}>
+          <button disabled={!!sessionAccount} onClick={enableSessionKey}>
             Enable
           </button>
-          <p>isEnabled: {isSessionEnabled.toString()}</p>
+          <p>isEnabled: {(!!sessionAccount).toString()}</p>
           <p>Deployed Contract</p>
           <p>This is the main contract in protostar quickstart</p>
           <p>{deployments[network]}</p>
