@@ -100,7 +100,7 @@ Voyager   https://goerli.voyager.online/tx/0x017b2c4fe35633ada5c514fb2048cffb3f8
 12:10:17 [INFO] Execution time: 2.63 s
 ```
 
-## Session kye Implementation
+## Session key Implementation
 
 ### GitHub
 

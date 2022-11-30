@@ -1,11 +1,13 @@
-import { createSession, SessionAccount, SignedSession, supportsSessions } from "@argent/x-sessions";
+import { createSession, SessionAccount, supportsSessions } from "@argent/x-sessions";
+import { utils } from "ethers";
 import { getStarknet } from "get-starknet";
-import { useEffect, useMemo, useState } from "react";
-import { AccountInterface, Contract, ec, Signer } from "starknet";
+import { useEffect, useState } from "react";
+import { Abi, AccountInterface, Contract, ec, number, uint256 } from "starknet";
 import { toFelt } from "starknet/dist/utils/number";
 
 import contractAbi from "../../contracts/build/main_abi.json";
 import deployments from "../../contracts/deployments.json";
+import Erc20Abi from "../lib/abi/ERC20.json";
 
 const { genKeyPair, getStarkKey, getKeyPair } = ec;
 
@@ -18,15 +20,14 @@ declare global {
 
 type Network = "localhost" | "testnet";
 
-interface Policy {
-  contractAddress: string;
-  selector: string;
+const ethAddress = "0x049D36570D4e46f48e99674bd3fcc84644DdD6b96F7C741B1562B82f9e004dC7";
+
+function getUint256CalldataFromBN(bn: number.BigNumberish) {
+  return { type: "struct" as const, ...uint256.bnToUint256(bn) };
 }
 
-interface RequestSession {
-  key: string;
-  expires: number;
-  policies: Policy[];
+export function parseInputAmountToUint256(input: string, decimals = 18) {
+  return getUint256CalldataFromBN(utils.parseUnits(input, decimals).toString());
 }
 
 export default function Home() {
@@ -56,8 +57,14 @@ export default function Home() {
     }
 
     if (sessionAccount) {
-      const contract = new Contract(contractAbi as any, deployments[network], sessionAccount);
-      await contract.increase_balance(toFelt(1));
+      const erc20Contract = new Contract(Erc20Abi as Abi, ethAddress, sessionAccount);
+      const result = await erc20Contract.transfer(account.address, parseInputAmountToUint256("0.000000001"));
+      console.log(result);
+      // await sessionAccount.execute({
+      //   contractAddress: deployments[network],
+      //   entrypoint: "increase_balance",
+      //   calldata: [toFelt(1)],
+      // });
     } else {
       const contract = new Contract(contractAbi as any, deployments[network], account);
       await contract.increase_balance(toFelt(1));
@@ -92,8 +99,10 @@ export default function Home() {
         expires: Math.floor((Date.now() + 1000 * 60 * 60 * 24) / 1000),
         policies: [
           {
-            contractAddress: deployments[network],
-            selector: "increase_balance",
+            // contractAddress: deployments[network],
+            // selector: "increase_balance",
+            contractAddress: ethAddress,
+            selector: "transfer",
           },
         ],
       },
