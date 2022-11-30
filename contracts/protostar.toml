@@ -6,8 +6,15 @@ lib-path = "lib"
 main = ["src/main.cairo"]
 
 # https://github.com/Shard-Labs/starknet-devnet
-["profile.devnet.protostar.deploy"]
-gateway-url="http://127.0.0.1:5050/"
+# ["profile.devnet.protostar.deploy"]
+# gateway-url="http://127.0.0.1:5050/"
+
+
+# Shared Configuration Profile
+# https://docs.swmansion.com/protostar/docs/tutorials/configuration-file
+[profile.devnet.project]
+gateway-url = "http://127.0.0.1:5050/"
+chain-id = 1536727068981429685321
 
 ["profile.testnet.protostar.deploy"]
 network="testnet"

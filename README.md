@@ -1,6 +1,16 @@
 # Starknet Sandbox
+
 - This is the StarkNet sandbox to know how to deploy contracts and interact from frontend
 - Also setup solidity to Cairo development workflow
+
+## Devnet
+
+https://shard-labs.github.io/starknet-devnet/docs/guide/run#run-with-docker
+
+```
+docker pull shardlabs/starknet-devnet
+docker run -p 127.0.0.1:5050:5050 shardlabs/starknet-devnet
+```
 
 ## Reference
 
@@ -8,14 +18,30 @@ This tutorial is nice
 https://medium.com/@darlingtonnnam/an-in-depth-guide-to-getting-started-with-starknet-js-a55c04d0ccb7
 
 ## Setup Argen X
+
 https://chrome.google.com/webstore/detail/argent-x/dlcobpjiigpikoobohmabehhmhfoodbb
 
+## Local
+
+please replace the private key, account address, contract address
+
+```
+protostar -p devnet invoke --contract-address 0x0253b3190a4458d0ec4f67d856b92d34339142e09c212deb5fe67d8d2b85a621 --function "increase_balance" --account-address 0x2d8c183ad449a794beda163d6906fcedf221743ce284b0c60e4a17a15ca6238  --max-fee auto --inputs 3 --private-key-path ./.pkey
+```
+
+```
+protostar -p devnet call --contract-address 0x0253b3190a4458d0ec4f67d856b92d34339142e09c212deb5fe67d8d2b85a621  --function "get_balance"
+```
+
+## Interact with Testnet Starknet Contract
+
 ## Bridge
+
+This is to get test token
+
 https://goerli.starkgate.starknet.io/
 
 https://testnet.starkscan.co/eth-tx/0xd2053ca772f45c0a51932fd4119979cea17d263828d0b540532982b7aa0333e5
-
-## Interact with Starknet Contract
 
 ### Build
 
