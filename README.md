@@ -23,7 +23,24 @@ https://chrome.google.com/webstore/detail/argent-x/dlcobpjiigpikoobohmabehhmhfoo
 
 ## Local
 
-please replace the private key, account address, contract address
+- please replace the private key, account address, contract address
+- original config file does not work, so I modified based on the shared cheat sheet
+
+### Obtain account key
+
+```
+http://localhost:5050/predeployed_accounts
+```
+
+### Build, Declare, Deploy
+
+```
+protostar build
+protostar -p devnet declare ./build/main.json
+protostar -p devnet deploy ./build/main.json
+```
+
+### Invoke and Call
 
 ```
 protostar -p devnet invoke --contract-address 0x0253b3190a4458d0ec4f67d856b92d34339142e09c212deb5fe67d8d2b85a621 --function "increase_balance" --account-address 0x2d8c183ad449a794beda163d6906fcedf221743ce284b0c60e4a17a15ca6238  --max-fee auto --inputs 3 --private-key-path ./.pkey
