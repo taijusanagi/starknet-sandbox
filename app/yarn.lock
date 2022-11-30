@@ -2,6 +2,14 @@
 # yarn lockfile v1
 
 
+"@argent/x-sessions@^5.0.10":
+  version "5.0.10"
+  resolved "https://registry.yarnpkg.com/@argent/x-sessions/-/x-sessions-5.0.10.tgz#6d2313c5689edfc2dcdb1582b3d996fdd27a060c"
+  integrity sha512-WeXAvKRC5HQddHlvg/FeyFc4yS0LhWHK0xmHERReyh8I7v8P5hJShcV/whRS9YIklvgOr1R9bgfWGjsGuDjAtQ==
+  dependencies:
+    minimalistic-assert "^1.0.1"
+    starknet "^4.13.2"
+
 "@babel/runtime-corejs3@^7.10.2":
   version "7.20.6"
   resolved "https://registry.yarnpkg.com/@babel/runtime-corejs3/-/runtime-corejs3-7.20.6.tgz#63dae945963539ab0ad578efbf3eff271e7067ae"
@@ -1962,7 +1970,7 @@ source-map-js@^1.0.2:
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.0.2.tgz#adbc361d9c62df380125e7f161f71c826f1e490c"
   integrity sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==
 
-starknet@^4.9.0:
+starknet@4.9.0, starknet@^4.13.2:
   version "4.9.0"
   resolved "https://registry.yarnpkg.com/starknet/-/starknet-4.9.0.tgz#1d0b5a1ff532a41b84a619f3d7c3f833f67dad2d"
   integrity sha512-0Y9Nce0msMs1k3jid93ZuPD2e3yW42FUuMFChRTaq1qcjP8G/fL+5+/zuq441VQ82/JxAHnVqBMvpmMgn5yJSA==
