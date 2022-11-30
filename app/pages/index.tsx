@@ -14,6 +14,8 @@ declare global {
   }
 }
 
+type Network = "localhost" | "testnet";
+
 interface Policy {
   contractAddress: string;
   selector: string;
@@ -31,6 +33,8 @@ export default function Home() {
   const [balance, setBalance] = useState("0");
   const [sessionSigner, setSessionSigner] = useState<Signer>();
   const [signedSession, setSignedSession] = useState<SignedSession>();
+
+  const [network, setNetwork] = useState<Network>("testnet");
 
   const connectWallet = async () => {
     try {
@@ -50,16 +54,16 @@ export default function Home() {
     if (!provider) {
       throw new Error("provider is not defined");
     }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const contract = new Contract(contractAbi as any, deployments.testnet, provider);
+
     if (isSessionEnabled) {
       if (!signedSession) {
         throw new Error("signed session is not defined");
       }
       const sessionAccount = new SessionAccount(provider, provider.address, sessionSigner, signedSession);
-      // const contract = new Contract(contractAbi as any, deployments.testnet, sessionAccount);
-      // await contract.increase_balance(toFelt(1));
+      const contract = new Contract(contractAbi as any, deployments[network], sessionAccount);
+      await contract.increase_balance(toFelt(1));
     } else {
+      const contract = new Contract(contractAbi as any, deployments[network], provider);
       await contract.increase_balance(toFelt(1));
     }
   };
@@ -69,8 +73,7 @@ export default function Home() {
       throw new Error("provider is not defined");
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const contract = new Contract(contractAbi as any, deployments.testnet, provider);
-    console.log(contract);
+    const contract = new Contract(contractAbi as any, deployments[network], provider);
     const { res } = await contract.get_balance();
     setBalance(res.toString());
   };
@@ -96,7 +99,7 @@ export default function Home() {
       expires: Math.floor((Date.now() + 1000 * 60 * 60 * 24) / 1000),
       policies: [
         {
-          contractAddress: deployments.testnet,
+          contractAddress: deployments[network],
           selector: "increase_balance",
         },
       ],
@@ -116,14 +119,18 @@ export default function Home() {
 
   return (
     <div>
+      <p>Network</p>
+      <select disabled onChange={(e) => setNetwork(e.target.value as Network)}>
+        <option value="testnet">Testnet</option>
+        <option value="localhost">Localhost</option>
+      </select>
       <p>Account</p>
       <button disabled={isConnected} onClick={connectWallet}>
         connect
       </button>
       <p>address: {address}</p>
       <p>isConnected: {isConnected.toString()}</p>
-      <p>Deployed Contract</p>
-      <p>This is the main contract in protostar quickstart</p>
+
       {!provider && <p>Please connect argent x wallet</p>}
       {provider && (
         <div>
@@ -132,7 +139,9 @@ export default function Home() {
             Enable
           </button>
           <p>isEnabled: {isSessionEnabled.toString()}</p>
-          <p>{deployments.testnet}</p>
+          <p>Deployed Contract</p>
+          <p>This is the main contract in protostar quickstart</p>
+          <p>{deployments[network]}</p>
           <button onClick={increaseBalance}>increase_balance 1</button>
           <button onClick={getBalance}>get_balance</button>
           <p>get_balance: {balance}</p>

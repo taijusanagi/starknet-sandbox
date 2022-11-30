@@ -24,7 +24,7 @@ https://chrome.google.com/webstore/detail/argent-x/dlcobpjiigpikoobohmabehhmhfoo
 ## Local
 
 - please replace the private key, account address, contract address
-- original config file does not work, so I modified based on the shared cheat sheet
+- The original config file does not work, so I modified based on the shared cheat sheet
 
 ### Obtain account key
 
@@ -54,7 +54,7 @@ protostar -p devnet call --contract-address 0x0253b3190a4458d0ec4f67d856b92d3433
 
 ## Bridge
 
-This is to get test token
+This is to get the test token
 
 https://goerli.starkgate.starknet.io/
 
@@ -98,4 +98,25 @@ Transaction hash: 0x017b2c4fe35633ada5c514fb2048cffb3f84950998cf8f333ae51c6d483e
 StarkScan https://testnet.starkscan.co/tx/0x017b2c4fe35633ada5c514fb2048cffb3f84950998cf8f333ae51c6d483e338d
 Voyager   https://goerli.voyager.online/tx/0x017b2c4fe35633ada5c514fb2048cffb3f84950998cf8f333ae51c6d483e338d
 12:10:17 [INFO] Execution time: 2.63 s
+```
+
+## Session kye Implementation
+
+### GitHub
+
+https://github.com/argentlabs/argent-x/
+
+### Demo
+
+https://argentlabs.github.io/argent-x/
+
+### API Reference
+
+http://localhost:5050/mint
+
+```
+{
+    "address": "0x0008E7AB9346b2d7E6cE75ef54bd011a3C1D979Ea1eC06925Fd95A2B4E7b7d63",
+    "amount": 1000000000000000000
+}
 ```
