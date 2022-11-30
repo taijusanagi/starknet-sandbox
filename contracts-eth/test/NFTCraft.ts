@@ -15,10 +15,8 @@ describe("NFTCraft", function () {
     await nftCraft.mint(signer.address, tokenId);
     await nftCraft.set(0, 0, 1, tokenId);
     expect(await nftCraft.ownerOf(tokenId)).to.eq(nftCraft.address);
-
-    const filter = nftCraft.filters.Set();
-    const logs = await ethers.provider.getLogs(filter);
-
+    const setFilter = nftCraft.filters.Set();
+    const logs = await ethers.provider.getLogs(setFilter);
     const tokenIds: any = {};
     logs.forEach((log) => {
       const { args } = nftCraft.interface.parseLog(log);
@@ -37,7 +35,14 @@ describe("NFTCraft", function () {
         }
       }
     }
-    // console.log(tokenIds);
+    const transferFilter = nftCraft.filters.Transfer();
+    const transferLogs = await ethers.provider.getLogs(transferFilter);
+    const holders: any = {};
+    transferLogs.forEach((log) => {
+      const { args } = nftCraft.interface.parseLog(log);
+      holders[args.id.toString()] = args.to;
+    });
     console.log(map);
+    console.log(holders);
   });
 });
