@@ -1,0 +1,20 @@
+[project]
+protostar-version = "0.8.1"
+lib-path = "lib"
+
+[contracts]
+main = ["src/main.cairo"]
+
+# https://github.com/Shard-Labs/starknet-devnet
+["profile.devnet.protostar.deploy"]
+gateway-url="http://127.0.0.1:5050/"
+
+["profile.testnet.protostar.deploy"]
+network="testnet"
+
+["profile.testnet-2.protostar.deploy"]
+gateway-url="https://alpha4-2.starknet.io"
+
+["profile.mainnet.protostar.deploy"]
+network="mainnet"
+
