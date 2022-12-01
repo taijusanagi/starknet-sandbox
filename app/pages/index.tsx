@@ -3,8 +3,7 @@ import { createSession, SessionAccount, supportsSessions } from "@argent/x-sessi
 import { utils } from "ethers";
 import { getStarknet } from "get-starknet";
 import { useEffect, useState } from "react";
-import { AccountInterface, Contract, ec, number, RpcProvider, uint256 } from "starknet";
-import { toFelt } from "starknet/dist/utils/number";
+import { Contract, ec, number, RpcProvider, stark, uint256 } from "starknet";
 
 import contractAbi from "../../contracts/build/nftcraft_abi.json";
 import deployments from "../../contracts/deployments.json";
@@ -29,8 +28,8 @@ export function parseInputAmountToUint256(input: string, decimals = 18) {
 type Network = "testnet";
 
 export default function Home() {
-  const [account, setAccount] = useState<AccountInterface>();
-  const [sessionAccount, setSessionAccount] = useState<SessionAccount>();
+  const [account, setAccount] = useState<any>();
+  const [sessionAccount, setSessionAccount] = useState<SessionAccount | undefined>();
   const [isSupportsSession, setIsSupportsSession] = useState(false);
   const [network, setNetwork] = useState<Network>("testnet");
 
@@ -46,7 +45,9 @@ export default function Home() {
     try {
       const starknet = getStarknet();
       // const starknet = await connect();
-      await starknet?.enable();
+      await starknet!.enable({
+        starknetVersion: "v4",
+      } as any);
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       setAccount(starknet?.account);
     } catch (e) {
@@ -85,14 +86,15 @@ export default function Home() {
     if (!account) {
       throw new Error("account is not defined");
     }
-    let sessionSigner;
-    const savedSessionSignerPk = window.localStorage.getItem("session-key-pk");
-    if (!savedSessionSignerPk) {
-      sessionSigner = genKeyPair();
-      window.localStorage.setItem("session-key-pk", sessionSigner.priv.toString());
-    } else {
-      sessionSigner = getKeyPair(savedSessionSignerPk);
-    }
+    const sessionSigner = genKeyPair();
+    // let sessionSigner;
+    // const savedSessionSignerPk = window.localStorage.getItem("session-key-pk");
+    // if (!savedSessionSignerPk) {
+    //   sessionSigner = genKeyPair();
+    //   window.localStorage.setItem("session-key-pk", sessionSigner.priv.toString());
+    // } else {
+    //   sessionSigner = getKeyPair(savedSessionSignerPk);
+    // }
     const signedSession = await createSession(
       {
         key: getStarkKey(sessionSigner),
@@ -106,7 +108,9 @@ export default function Home() {
       },
       account
     );
-    setSessionAccount(new SessionAccount(account, account.address, sessionSigner, signedSession));
+
+    const sessionAccount = new SessionAccount(account, account.address, sessionSigner, signedSession);
+    setSessionAccount(sessionAccount);
   };
 
   const setMap = async () => {
@@ -116,21 +120,40 @@ export default function Home() {
 
     if (sessionAccount) {
       const contract = new Contract(contractAbi as any, deployments[network], sessionAccount);
-      await contract.set_eccd65dc(
-        [toFelt(inputX), ""],
-        [toFelt(inputY), ""],
-        [toFelt(inputZ), ""],
-        [toFelt(inputModelId), ""],
-        [toFelt(inputTextureId), ""]
-      );
+      // await contract.set_eccd65dc(
+      //   [number.toFelt(inputX), 0],
+      //   [number.toFelt(inputY), 0],
+      //   [number.toFelt(inputZ), 0],
+      //   [number.toFelt(inputModelId), 0],
+      //   [number.toFelt(inputTextureId), 0]
+      // );
+
+      await sessionAccount.execute({
+        entrypoint: "set_eccd65dc",
+        contractAddress: deployments[network],
+        calldata: [
+          [number.toFelt(inputX), ""],
+          [number.toFelt(inputY), ""],
+          [number.toFelt(inputZ), ""],
+          [number.toFelt(inputModelId), ""],
+          [number.toFelt(inputTextureId), ""],
+        ],
+        // calldata: stark.compileCalldata({
+        //   x: [number.toFelt(inputX), ""],
+        //   y: [number.toFelt(inputY), ""],
+        //   z: [number.toFelt(inputZ), ""],
+        //   mId: [number.toFelt(inputModelId), ""],
+        //   tId: [number.toFelt(inputTextureId), ""],
+        // }),
+      });
     } else {
       const contract = new Contract(contractAbi as any, deployments[network], account);
       await contract.set_eccd65dc(
-        [toFelt(inputX), ""],
-        [toFelt(inputY), ""],
-        [toFelt(inputZ), ""],
-        [toFelt(inputModelId), ""],
-        [toFelt(inputTextureId), ""]
+        [number.toFelt(inputX), ""],
+        [number.toFelt(inputY), ""],
+        [number.toFelt(inputZ), ""],
+        [number.toFelt(inputModelId), ""],
+        [number.toFelt(inputTextureId), ""]
       );
     }
   };

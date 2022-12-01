@@ -17,11 +17,12 @@ nftcraft = ["src/nftcraft.cairo"]
 gateway-url = "http://127.0.0.1:5050/"
 chain-id = 1536727068981429685321
 
+[profile.testnet-2.project]
+gateway-url = "https://alpha4-2.starknet.io"
+chain-id = 1536727068981429685321
+
 ["profile.testnet.protostar.deploy"]
 network="testnet"
-
-["profile.testnet-2.protostar.deploy"]
-gateway-url="https://alpha4-2.starknet.io"
 
 ["profile.mainnet.protostar.deploy"]
 network="mainnet"
