@@ -231,42 +231,37 @@ abstract contract ERC721TokenReceiver {
 }
 
 contract NFTCraft is ERC721 {
-
   constructor() ERC721("NFTCraft", "NFTC") {}
+
+  event Set(uint256 indexed x, uint256 indexed y, uint256 indexed z, uint256 modelId, uint256 textureId, uint256 tokenId);
+
+  // x => y => z => nft
+  mapping(uint256 => mapping(uint256 => mapping(uint256=> uint256))) public locations;
+  mapping(uint256 => uint256) public modelIds;
+  mapping(uint256 => uint256) public textureIds;
+
+  uint256 public constant length = 200;
+  uint256 public totalSupply;
+
+  // this does not have mint
+  function set(uint256 x, uint256 y, uint256 z, uint256 modelId, uint256 textureId) public {
+    require(x < length, "NFTCraft: x length invalid");
+    require(y < length, "NFTCraft: y length invalid");
+    require(z < length, "NFTCraft: z length invalid");
+    // no model and texture id verification for rapid development
+    totalSupply++;
+    uint256 tokenId = totalSupply;
+    if(locations[x][y][z] > 0) {
+      transferFrom(address(this), msg.sender, tokenId);
+    }
+    _mint(address(this), tokenId);
+    locations[x][y][z] = tokenId;
+    modelIds[tokenId] = modelId;
+    textureIds[tokenId] = textureId;
+    emit Set(x, y, z, modelId, textureId, tokenId);
+  }
 
   function tokenURI(uint256 tokenId) public view override returns(string memory)  {
     return "";
   }
-
-
-  struct Info {
-    uint256 x;
-    uint256 y;
-    uint256 z;
-    uint256 tokenId;
-  }
-
-  event Set(uint256 indexed x, uint256 indexed y, uint256 indexed z, uint256 tokenId);
-
-  uint256 public constant length = 200;
-  // x => y => z => nft
-  mapping(uint256 => mapping(uint256 => mapping(uint256=> uint256))) public objects;
-
-  function mint(address to, uint256 tokenId) public {
-    require(tokenId > 0, "NFTCraft: tokenId invalid");
-    _mint(to, tokenId);
-  }
-
-  function set(uint256 x, uint256 y, uint256 z, uint256 tokenId) public {
-    require(x < length, "NFTCraft: x length invalid");
-    require(y < length, "NFTCraft: y length invalid");
-    require(z < length, "NFTCraft: z length invalid");
-    if(objects[x][y][z] > 0) {
-      transferFrom(address(this), msg.sender, tokenId);
-    }
-    transferFrom(msg.sender, address(this), tokenId);
-    objects[x][y][z] = tokenId;
-    emit Set(x, y, z, tokenId);
-  }
-
 }

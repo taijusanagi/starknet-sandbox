@@ -10,10 +10,9 @@ describe("NFTCraft", function () {
   };
 
   it("Should work", async function () {
-    const { signer, nftCraft } = await fixture();
+    const { nftCraft } = await fixture();
     const tokenId = 1;
-    await nftCraft.mint(signer.address, tokenId);
-    await nftCraft.set(0, 0, 1, tokenId);
+    await nftCraft.set(0, 0, 1, 0, 0);
     expect(await nftCraft.ownerOf(tokenId)).to.eq(nftCraft.address);
     const setFilter = nftCraft.filters.Set();
     const logs = await ethers.provider.getLogs(setFilter);
