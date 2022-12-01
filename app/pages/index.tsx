@@ -149,9 +149,11 @@ export default function Home() {
         },
         undefined,
         {
-          // maxFee: "10000",
+          maxFee: "10000",
         }
       );
+
+      console.log(result);
 
       console.log(result);
     } else {
@@ -204,12 +206,59 @@ export default function Home() {
     console.log(map);
   };
 
+  const run = async (type: string, x: number, y: number, z: number) => {
+    if (type === "set") {
+      x = x > 0 ? x : x * -1;
+      y = y > 0 ? y : y * -1;
+      z = z > 0 ? z : z * -1;
+      console.log("object put at...");
+      console.log("x", x);
+      console.log("y", y);
+      console.log("z", z);
+      console.log("isSessionEnabled", !!sessionAccount);
+      if (sessionAccount) {
+        const result = await sessionAccount.execute(
+          {
+            entrypoint: "set_eccd65dc",
+            contractAddress: deployments[network],
+            calldata: [
+              [number.toFelt(inputX), ""],
+              [number.toFelt(inputY), ""],
+              [number.toFelt(inputZ), ""],
+              [number.toFelt(inputModelId), ""],
+              [number.toFelt(inputTextureId), ""],
+            ],
+          },
+          undefined,
+          {
+            maxFee: "10000",
+          }
+        );
+        console.log(result);
+      } else {
+        const contract = new Contract(contractAbi as any, deployments[network], account);
+        const result = await contract.set_eccd65dc(
+          [number.toFelt(x), ""],
+          [number.toFelt(y), ""],
+          [number.toFelt(z), ""],
+          [number.toFelt("0"), ""],
+          [number.toFelt("0"), ""]
+        );
+        console.log(result);
+      }
+    }
+  };
+
   useEffect(() => {
     if (!account) {
       return;
     }
     supportsSessions(account.address, account).then((result) => setIsSupportsSession(result));
-  }, [account]);
+
+    window.addEventListener("message", async function (event) {
+      run(event.data.type, event.data.x, event.data.y, event.data.z);
+    });
+  }, []);
 
   return (
     <div>
@@ -221,10 +270,16 @@ export default function Home() {
       <button disabled={!!account} onClick={connectWallet}>
         connect
       </button>
+      <button disabled={!account} onClick={enableSessionKey}>
+        Use Session Key
+      </button>
+      {/* <p>{account && <>{`User: ${account.address}`}</>}</p> */}
       {!account && <p>Please connect argent x wallet</p>}
       {account && (
         <div>
-          <p>address: {account.address}</p>
+          <iframe src="http://localhost:3000" width="100%" height="600" />
+
+          {/* <p>address: {account.address}</p>
           <p>isSupportsSession: {(!!isSupportsSession).toString()}</p>
           <button disabled={!!sessionAccount} onClick={enableSessionKey}>
             Enable Session Key
@@ -251,7 +306,7 @@ export default function Home() {
             />
             <button onClick={setMap}>Set</button>
             <button onClick={getMap}>Get</button>
-          </div>
+          </div> */}
         </div>
       )}
     </div>
