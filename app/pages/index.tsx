@@ -128,24 +128,32 @@ export default function Home() {
       //   [number.toFelt(inputTextureId), 0]
       // );
 
-      await sessionAccount.execute({
-        entrypoint: "set_eccd65dc",
-        contractAddress: deployments[network],
-        calldata: [
-          [number.toFelt(inputX), ""],
-          [number.toFelt(inputY), ""],
-          [number.toFelt(inputZ), ""],
-          [number.toFelt(inputModelId), ""],
-          [number.toFelt(inputTextureId), ""],
-        ],
-        // calldata: stark.compileCalldata({
-        //   x: [number.toFelt(inputX), ""],
-        //   y: [number.toFelt(inputY), ""],
-        //   z: [number.toFelt(inputZ), ""],
-        //   mId: [number.toFelt(inputModelId), ""],
-        //   tId: [number.toFelt(inputTextureId), ""],
-        // }),
-      });
+      const result = await sessionAccount.execute(
+        {
+          entrypoint: "set_eccd65dc",
+          contractAddress: deployments[network],
+          calldata: [
+            [number.toFelt(inputX), ""],
+            [number.toFelt(inputY), ""],
+            [number.toFelt(inputZ), ""],
+            [number.toFelt(inputModelId), ""],
+            [number.toFelt(inputTextureId), ""],
+          ],
+          // calldata: stark.compileCalldata({
+          //   x: [number.toFelt(inputX), ""],
+          //   y: [number.toFelt(inputY), ""],
+          //   z: [number.toFelt(inputZ), ""],
+          //   mId: [number.toFelt(inputModelId), ""],
+          //   tId: [number.toFelt(inputTextureId), ""],
+          // }),
+        },
+        undefined,
+        {
+          // maxFee: "10000",
+        }
+      );
+
+      console.log(result);
     } else {
       const contract = new Contract(contractAbi as any, deployments[network], account);
       await contract.set_eccd65dc(
