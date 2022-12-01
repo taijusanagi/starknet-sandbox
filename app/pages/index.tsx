@@ -100,7 +100,7 @@ export default function Home() {
         policies: [
           {
             contractAddress: deployments[network],
-            selector: "increase_balance",
+            selector: "set_eccd65dc",
           },
         ],
       },
@@ -113,14 +113,26 @@ export default function Home() {
     if (!account) {
       throw new Error("account is not defined");
     }
-    const contract = new Contract(contractAbi as any, deployments[network], account);
-    await contract.set_eccd65dc(
-      [toFelt(inputX), ""],
-      [toFelt(inputY), ""],
-      [toFelt(inputZ), ""],
-      [toFelt(inputModelId), ""],
-      [toFelt(inputTextureId), ""]
-    );
+
+    if (sessionAccount) {
+      const contract = new Contract(contractAbi as any, deployments[network], sessionAccount);
+      await contract.set_eccd65dc(
+        [toFelt(inputX), ""],
+        [toFelt(inputY), ""],
+        [toFelt(inputZ), ""],
+        [toFelt(inputModelId), ""],
+        [toFelt(inputTextureId), ""]
+      );
+    } else {
+      const contract = new Contract(contractAbi as any, deployments[network], account);
+      await contract.set_eccd65dc(
+        [toFelt(inputX), ""],
+        [toFelt(inputY), ""],
+        [toFelt(inputZ), ""],
+        [toFelt(inputModelId), ""],
+        [toFelt(inputTextureId), ""]
+      );
+    }
   };
 
   const getMap = async () => {
@@ -132,18 +144,23 @@ export default function Home() {
       from_block: { block_number: 0 },
       to_block: { block_number },
       address: deployments[network],
-      keys: ["0x2360a635772f38ab9463ddf6391c3896b64ef3ff12419de002fcf26f9b35df8"],
+      keys: ["0x13c0314b84106a72283aa14b33b263d16c59e189dac255e4e44a042c0ef962f"],
       chunk_size: 20,
     } as any);
-
+    console.log(events);
     const tokenIds: any = {};
     events.forEach((event) => {
-      tokenIds[parseInt(event.data[0]).toString()] = {
-        [parseInt(event.data[2]).toString()]: {
-          [parseInt(event.data[4]).toString()]: parseInt(event.data[6]).toString(),
-        },
-      };
+      if (!tokenIds[parseInt(event.data[0]).toString()]) {
+        tokenIds[parseInt(event.data[0]).toString()] = {};
+      }
+      if (!tokenIds[parseInt(event.data[0]).toString()][parseInt(event.data[2]).toString()]) {
+        tokenIds[parseInt(event.data[0]).toString()][parseInt(event.data[2]).toString()] = {};
+      }
+      tokenIds[parseInt(event.data[0]).toString()][parseInt(event.data[2]).toString()][
+        parseInt(event.data[4]).toString()
+      ] = parseInt(event.data[10]).toString();
     });
+    console.log(tokenIds);
     const map = [];
     for (let x = 0; x < 200; x++) {
       for (let y = 0; y < 200; y++) {
@@ -154,8 +171,6 @@ export default function Home() {
       }
     }
     console.log(map);
-    console.log(tokenIds);
-    console.log(events);
   };
 
   useEffect(() => {
