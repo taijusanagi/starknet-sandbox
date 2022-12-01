@@ -88,49 +88,21 @@
                 "type": "Uint256"
             },
             {
+                "name": "modelId",
+                "type": "Uint256"
+            },
+            {
+                "name": "textureId",
+                "type": "Uint256"
+            },
+            {
                 "name": "tokenId",
                 "type": "Uint256"
             }
         ],
         "keys": [],
-        "name": "Set_80c9bdaa",
+        "name": "Set_1d170fcf",
         "type": "event"
-    },
-    {
-        "inputs": [
-            {
-                "name": "tokenId",
-                "type": "Uint256"
-            }
-        ],
-        "name": "tokenURI_c87b56dd",
-        "outputs": [
-            {
-                "name": "__warp_1_len",
-                "type": "felt"
-            },
-            {
-                "name": "__warp_1",
-                "type": "felt*"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "__warp_2_to",
-                "type": "felt"
-            },
-            {
-                "name": "__warp_3_tokenId",
-                "type": "Uint256"
-            }
-        ],
-        "name": "mint_40c10f19",
-        "outputs": [],
-        "type": "function"
     },
     {
         "inputs": [
@@ -147,20 +119,58 @@
                 "type": "Uint256"
             },
             {
-                "name": "__warp_7_tokenId",
+                "name": "__warp_7_modelId",
+                "type": "Uint256"
+            },
+            {
+                "name": "__warp_8_textureId",
                 "type": "Uint256"
             }
         ],
-        "name": "set_606ce3bf",
+        "name": "set_eccd65dc",
         "outputs": [],
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "length_1f7b6d32",
+        "inputs": [
+            {
+                "name": "tokenId",
+                "type": "Uint256"
+            }
+        ],
+        "name": "tokenURI_c87b56dd",
         "outputs": [
             {
-                "name": "__warp_8",
+                "name": "__warp_10_len",
+                "type": "felt"
+            },
+            {
+                "name": "__warp_10",
+                "type": "felt*"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "__warp_11__i0",
+                "type": "Uint256"
+            },
+            {
+                "name": "__warp_12__i1",
+                "type": "Uint256"
+            },
+            {
+                "name": "__warp_13__i2",
+                "type": "Uint256"
+            }
+        ],
+        "name": "locations_e27f67a3",
+        "outputs": [
+            {
+                "name": "__warp_14",
                 "type": "Uint256"
             }
         ],
@@ -170,22 +180,55 @@
     {
         "inputs": [
             {
-                "name": "__warp_9__i0",
-                "type": "Uint256"
-            },
-            {
-                "name": "__warp_10__i1",
-                "type": "Uint256"
-            },
-            {
-                "name": "__warp_11__i2",
+                "name": "__warp_15__i0",
                 "type": "Uint256"
             }
         ],
-        "name": "objects_601f97a3",
+        "name": "modelIds_19e2a109",
         "outputs": [
             {
-                "name": "__warp_12",
+                "name": "__warp_16",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "__warp_17__i0",
+                "type": "Uint256"
+            }
+        ],
+        "name": "textureIds_deebb7e9",
+        "outputs": [
+            {
+                "name": "__warp_18",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "length_1f7b6d32",
+        "outputs": [
+            {
+                "name": "__warp_19",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "totalSupply_18160ddd",
+        "outputs": [
+            {
+                "name": "__warp_20",
                 "type": "Uint256"
             }
         ],

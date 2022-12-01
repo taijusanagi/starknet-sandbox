@@ -10,24 +10,18 @@ from warplib.maths.int_conversions import warp_uint256
 from warplib.maths.external_input_check_ints import warp_external_input_check_int256, warp_external_input_check_int8, warp_external_input_check_int32
 from warplib.maths.external_input_check_address import warp_external_input_check_address
 from warplib.maths.external_input_check_bool import warp_external_input_check_bool
-from starkware.cairo.common.dict_access import DictAccess
 from starkware.cairo.common.cairo_builtins import HashBuiltin, BitwiseBuiltin
-from starkware.cairo.common.default_dict import default_dict_new, default_dict_finalize
-from warplib.maths.gt import warp_gt256
 from warplib.maths.lt import warp_lt256
+from warplib.maths.add import warp_add256
+from warplib.maths.sub import warp_sub256
+from warplib.maths.gt import warp_gt256
 from starkware.starknet.common.syscalls import get_contract_address, get_caller_address
+from starkware.cairo.common.dict_access import DictAccess
+from starkware.cairo.common.default_dict import default_dict_new, default_dict_finalize
 from warplib.maths.neq import warp_neq
 from warplib.maths.eq import warp_eq
 from warplib.maths.sub_unsafe import warp_sub_unsafe256
 from warplib.maths.add_unsafe import warp_add_unsafe256
-
-
-struct Info_ec5baea9{
-    x : Uint256,
-    y : Uint256,
-    z : Uint256,
-    tokenId : Uint256,
-}
 
 
 struct cd_dynarray_felt{
@@ -337,30 +331,36 @@ func Transfer_ddf252ad(__warp_6_from : felt, to : felt, id : Uint256){
 
 
 @event
-func Set_80c9bdaa(x : Uint256, y : Uint256, z : Uint256, tokenId : Uint256){
+func Set_1d170fcf(x : Uint256, y : Uint256, z : Uint256, modelId : Uint256, textureId : Uint256, tokenId : Uint256){
 }
 
 namespace NFTCraft{
 
     // Dynamic variables - Arrays and Maps
 
-    const __warp_0_objects = 1;
+    const __warp_0_locations = 1;
 
-    const __warp_0_name = 2;
+    const __warp_1_modelIds = 2;
 
-    const __warp_1_symbol = 3;
+    const __warp_2_textureIds = 3;
 
-    const __warp_2__ownerOf = 4;
+    const __warp_0_name = 4;
 
-    const __warp_3__balanceOf = 5;
+    const __warp_1_symbol = 5;
 
-    const __warp_4_getApproved = 6;
+    const __warp_2__ownerOf = 6;
 
-    const __warp_5_isApprovedForAll = 7;
+    const __warp_3__balanceOf = 7;
+
+    const __warp_4_getApproved = 8;
+
+    const __warp_5_isApprovedForAll = 9;
 
     // Static variables
 
-    const length = 0;
+    const length = 3;
+
+    const __warp_3_totalSupply = 5;
 
 
     func __warp_constructor_3()-> (){
@@ -375,30 +375,36 @@ namespace NFTCraft{
     }
 
 
-    func set_606ce3bf_if_part1{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr : felt, bitwise_ptr : BitwiseBuiltin*}(__warp_7_tokenId : Uint256, __warp_4_x : Uint256, __warp_5_y : Uint256, __warp_6_z : Uint256)-> (){
+    func set_eccd65dc_if_part1{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr : felt, bitwise_ptr : BitwiseBuiltin*}(__warp_9_tokenId : Uint256, __warp_4_x : Uint256, __warp_5_y : Uint256, __warp_6_z : Uint256, __warp_7_modelId : Uint256, __warp_8_textureId : Uint256)-> (){
     alloc_locals;
 
 
         
-        let (__warp_se_15) = get_caller_address();
+        let (__warp_se_15) = get_contract_address();
         
-        let (__warp_se_16) = get_contract_address();
+        _mint_4e6ec247(__warp_se_15, __warp_9_tokenId);
         
-        transferFrom_23b872dd_internal(__warp_se_15, __warp_se_16, __warp_7_tokenId);
+        let (__warp_se_16) = WS1_INDEX_Uint256_to_warp_id(__warp_0_locations, __warp_4_x);
         
-        let (__warp_se_17) = WS1_INDEX_Uint256_to_warp_id(__warp_0_objects, __warp_4_x);
+        let (__warp_se_17) = WS0_READ_warp_id(__warp_se_16);
         
-        let (__warp_se_18) = WS0_READ_warp_id(__warp_se_17);
+        let (__warp_se_18) = WS1_INDEX_Uint256_to_warp_id(__warp_se_17, __warp_5_y);
         
-        let (__warp_se_19) = WS1_INDEX_Uint256_to_warp_id(__warp_se_18, __warp_5_y);
+        let (__warp_se_19) = WS0_READ_warp_id(__warp_se_18);
         
-        let (__warp_se_20) = WS0_READ_warp_id(__warp_se_19);
+        let (__warp_se_20) = WS0_INDEX_Uint256_to_Uint256(__warp_se_19, __warp_6_z);
         
-        let (__warp_se_21) = WS0_INDEX_Uint256_to_Uint256(__warp_se_20, __warp_6_z);
+        WS_WRITE0(__warp_se_20, __warp_9_tokenId);
         
-        WS_WRITE0(__warp_se_21, __warp_7_tokenId);
+        let (__warp_se_21) = WS0_INDEX_Uint256_to_Uint256(__warp_1_modelIds, __warp_9_tokenId);
         
-        Set_80c9bdaa.emit(__warp_4_x, __warp_5_y, __warp_6_z, __warp_7_tokenId);
+        WS_WRITE0(__warp_se_21, __warp_7_modelId);
+        
+        let (__warp_se_22) = WS0_INDEX_Uint256_to_Uint256(__warp_2_textureIds, __warp_9_tokenId);
+        
+        WS_WRITE0(__warp_se_22, __warp_8_textureId);
+        
+        Set_1d170fcf.emit(__warp_4_x, __warp_5_y, __warp_6_z, __warp_7_modelId, __warp_8_textureId, __warp_9_tokenId);
         
         
         
@@ -442,11 +448,11 @@ namespace NFTCraft{
 
 
         
-        let (__warp_se_33) = get_caller_address();
+        let (__warp_se_41) = get_caller_address();
         
-        let (__warp_se_34) = warp_eq(__warp_se_33, __warp_16_owner);
+        let (__warp_se_42) = warp_eq(__warp_se_41, __warp_16_owner);
         
-        if (__warp_se_34 != 0){
+        if (__warp_se_42 != 0){
         
             
             let __warp_rc_0 = 1;
@@ -461,17 +467,17 @@ namespace NFTCraft{
         }else{
         
             
-            let (__warp_se_35) = WS5_INDEX_felt_to_warp_id(__warp_5_isApprovedForAll, __warp_16_owner);
+            let (__warp_se_43) = WS5_INDEX_felt_to_warp_id(__warp_5_isApprovedForAll, __warp_16_owner);
             
-            let (__warp_se_36) = WS0_READ_warp_id(__warp_se_35);
+            let (__warp_se_44) = WS0_READ_warp_id(__warp_se_43);
             
-            let (__warp_se_37) = get_caller_address();
+            let (__warp_se_45) = get_caller_address();
             
-            let (__warp_se_38) = WS4_INDEX_felt_to_felt(__warp_se_36, __warp_se_37);
+            let (__warp_se_46) = WS4_INDEX_felt_to_felt(__warp_se_44, __warp_se_45);
             
-            let (__warp_se_39) = WS2_READ_felt(__warp_se_38);
+            let (__warp_se_47) = WS2_READ_felt(__warp_se_46);
             
-            let __warp_rc_0 = __warp_se_39;
+            let __warp_rc_0 = __warp_se_47;
             
             let __warp_rc_0 = __warp_rc_0;
             
@@ -490,11 +496,11 @@ namespace NFTCraft{
 
 
         
-        let (__warp_se_47) = get_caller_address();
+        let (__warp_se_55) = get_caller_address();
         
-        let (__warp_se_48) = warp_eq(__warp_se_47, __warp_19_from);
+        let (__warp_se_56) = warp_eq(__warp_se_55, __warp_19_from);
         
-        if (__warp_se_48 != 0){
+        if (__warp_se_56 != 0){
         
             
             let __warp_rc_4 = 1;
@@ -509,17 +515,17 @@ namespace NFTCraft{
         }else{
         
             
-            let (__warp_se_49) = WS5_INDEX_felt_to_warp_id(__warp_5_isApprovedForAll, __warp_19_from);
+            let (__warp_se_57) = WS5_INDEX_felt_to_warp_id(__warp_5_isApprovedForAll, __warp_19_from);
             
-            let (__warp_se_50) = WS0_READ_warp_id(__warp_se_49);
+            let (__warp_se_58) = WS0_READ_warp_id(__warp_se_57);
             
-            let (__warp_se_51) = get_caller_address();
+            let (__warp_se_59) = get_caller_address();
             
-            let (__warp_se_52) = WS4_INDEX_felt_to_felt(__warp_se_50, __warp_se_51);
+            let (__warp_se_60) = WS4_INDEX_felt_to_felt(__warp_se_58, __warp_se_59);
             
-            let (__warp_se_53) = WS2_READ_felt(__warp_se_52);
+            let (__warp_se_61) = WS2_READ_felt(__warp_se_60);
             
-            let __warp_rc_4 = __warp_se_53;
+            let __warp_rc_4 = __warp_se_61;
             
             let __warp_rc_4 = __warp_rc_4;
             
@@ -564,15 +570,15 @@ namespace NFTCraft{
         }else{
         
             
-            let (__warp_se_54) = get_caller_address();
+            let (__warp_se_62) = get_caller_address();
             
-            let (__warp_se_55) = WS2_INDEX_Uint256_to_felt(__warp_4_getApproved, __warp_21_id);
+            let (__warp_se_63) = WS2_INDEX_Uint256_to_felt(__warp_4_getApproved, __warp_21_id);
             
-            let (__warp_se_56) = WS2_READ_felt(__warp_se_55);
+            let (__warp_se_64) = WS2_READ_felt(__warp_se_63);
             
-            let (__warp_se_57) = warp_eq(__warp_se_54, __warp_se_56);
+            let (__warp_se_65) = warp_eq(__warp_se_62, __warp_se_64);
             
-            let __warp_rc_2 = __warp_se_57;
+            let __warp_rc_2 = __warp_se_65;
             
             let __warp_rc_2 = __warp_rc_2;
             
@@ -593,20 +599,20 @@ namespace NFTCraft{
 
 
         
-        let (__warp_se_58) = WS2_INDEX_Uint256_to_felt(__warp_2__ownerOf, __warp_21_id);
+        let (__warp_se_66) = WS2_INDEX_Uint256_to_felt(__warp_2__ownerOf, __warp_21_id);
         
-        let (__warp_se_59) = WS2_READ_felt(__warp_se_58);
+        let (__warp_se_67) = WS2_READ_felt(__warp_se_66);
         
-        let (__warp_se_60) = warp_eq(__warp_19_from, __warp_se_59);
+        let (__warp_se_68) = warp_eq(__warp_19_from, __warp_se_67);
         
         with_attr error_message("WRONG_FROM"){
-            assert __warp_se_60 = 1;
+            assert __warp_se_68 = 1;
         }
         
-        let (__warp_se_61) = warp_neq(__warp_20_to, 0);
+        let (__warp_se_69) = warp_neq(__warp_20_to, 0);
         
         with_attr error_message("INVALID_RECIPIENT"){
-            assert __warp_se_61 = 1;
+            assert __warp_se_69 = 1;
         }
         
         let __warp_rc_2 = 0;
@@ -627,39 +633,39 @@ namespace NFTCraft{
             
             let __warp_cs_0 = __warp_19_from;
             
-            let (__warp_se_62) = WS3_INDEX_felt_to_Uint256(__warp_3__balanceOf, __warp_cs_0);
+            let (__warp_se_70) = WS3_INDEX_felt_to_Uint256(__warp_3__balanceOf, __warp_cs_0);
             
-            let (__warp_se_63) = WS1_READ_Uint256(__warp_se_62);
+            let (__warp_se_71) = WS1_READ_Uint256(__warp_se_70);
             
-            let (__warp_pse_1) = warp_sub_unsafe256(__warp_se_63, Uint256(low=1, high=0));
+            let (__warp_pse_1) = warp_sub_unsafe256(__warp_se_71, Uint256(low=1, high=0));
             
-            let (__warp_se_64) = WS3_INDEX_felt_to_Uint256(__warp_3__balanceOf, __warp_cs_0);
+            let (__warp_se_72) = WS3_INDEX_felt_to_Uint256(__warp_3__balanceOf, __warp_cs_0);
             
-            WS_WRITE0(__warp_se_64, __warp_pse_1);
+            WS_WRITE0(__warp_se_72, __warp_pse_1);
             
             warp_add_unsafe256(__warp_pse_1, Uint256(low=1, high=0));
             
             let __warp_cs_1 = __warp_20_to;
             
-            let (__warp_se_65) = WS3_INDEX_felt_to_Uint256(__warp_3__balanceOf, __warp_cs_1);
+            let (__warp_se_73) = WS3_INDEX_felt_to_Uint256(__warp_3__balanceOf, __warp_cs_1);
             
-            let (__warp_se_66) = WS1_READ_Uint256(__warp_se_65);
+            let (__warp_se_74) = WS1_READ_Uint256(__warp_se_73);
             
-            let (__warp_pse_2) = warp_add_unsafe256(__warp_se_66, Uint256(low=1, high=0));
+            let (__warp_pse_2) = warp_add_unsafe256(__warp_se_74, Uint256(low=1, high=0));
             
-            let (__warp_se_67) = WS3_INDEX_felt_to_Uint256(__warp_3__balanceOf, __warp_cs_1);
+            let (__warp_se_75) = WS3_INDEX_felt_to_Uint256(__warp_3__balanceOf, __warp_cs_1);
             
-            WS_WRITE0(__warp_se_67, __warp_pse_2);
+            WS_WRITE0(__warp_se_75, __warp_pse_2);
             
             warp_sub_unsafe256(__warp_pse_2, Uint256(low=1, high=0));
         
-        let (__warp_se_68) = WS2_INDEX_Uint256_to_felt(__warp_2__ownerOf, __warp_21_id);
+        let (__warp_se_76) = WS2_INDEX_Uint256_to_felt(__warp_2__ownerOf, __warp_21_id);
         
-        WS_WRITE1(__warp_se_68, __warp_20_to);
+        WS_WRITE1(__warp_se_76, __warp_20_to);
         
-        let (__warp_se_69) = WS2_INDEX_Uint256_to_felt(__warp_4_getApproved, __warp_21_id);
+        let (__warp_se_77) = WS2_INDEX_Uint256_to_felt(__warp_4_getApproved, __warp_21_id);
         
-        WS_WRITE1(__warp_se_69, 0);
+        WS_WRITE1(__warp_se_77, 0);
         
         Transfer_ddf252ad.emit(__warp_19_from, __warp_20_to, __warp_21_id);
         
@@ -675,9 +681,9 @@ namespace NFTCraft{
 
 
         
-        let (__warp_se_70) = warp_eq(__warp_28_interfaceId, 33540519);
+        let (__warp_se_78) = warp_eq(__warp_28_interfaceId, 33540519);
         
-        if (__warp_se_70 != 0){
+        if (__warp_se_78 != 0){
         
             
             let __warp_rc_8 = 1;
@@ -692,9 +698,9 @@ namespace NFTCraft{
         }else{
         
             
-            let (__warp_se_71) = warp_eq(__warp_28_interfaceId, 2158778573);
+            let (__warp_se_79) = warp_eq(__warp_28_interfaceId, 2158778573);
             
-            let __warp_rc_8 = __warp_se_71;
+            let __warp_rc_8 = __warp_se_79;
             
             let __warp_rc_8 = __warp_rc_8;
             
@@ -737,9 +743,9 @@ namespace NFTCraft{
         }else{
         
             
-            let (__warp_se_72) = warp_eq(__warp_28_interfaceId, 1532892063);
+            let (__warp_se_80) = warp_eq(__warp_28_interfaceId, 1532892063);
             
-            let __warp_rc_6 = __warp_se_72;
+            let __warp_rc_6 = __warp_se_80;
             
             let __warp_rc_6 = __warp_rc_6;
             
@@ -758,40 +764,40 @@ namespace NFTCraft{
 
 
         
-        let (__warp_se_73) = warp_neq(__warp_30_to, 0);
+        let (__warp_se_81) = warp_neq(__warp_30_to, 0);
         
         with_attr error_message("INVALID_RECIPIENT"){
-            assert __warp_se_73 = 1;
+            assert __warp_se_81 = 1;
         }
         
-        let (__warp_se_74) = WS2_INDEX_Uint256_to_felt(__warp_2__ownerOf, __warp_31_id);
+        let (__warp_se_82) = WS2_INDEX_Uint256_to_felt(__warp_2__ownerOf, __warp_31_id);
         
-        let (__warp_se_75) = WS2_READ_felt(__warp_se_74);
+        let (__warp_se_83) = WS2_READ_felt(__warp_se_82);
         
-        let (__warp_se_76) = warp_eq(__warp_se_75, 0);
+        let (__warp_se_84) = warp_eq(__warp_se_83, 0);
         
         with_attr error_message("ALREADY_MINTED"){
-            assert __warp_se_76 = 1;
+            assert __warp_se_84 = 1;
         }
         
             
             let __warp_cs_2 = __warp_30_to;
             
-            let (__warp_se_77) = WS3_INDEX_felt_to_Uint256(__warp_3__balanceOf, __warp_cs_2);
+            let (__warp_se_85) = WS3_INDEX_felt_to_Uint256(__warp_3__balanceOf, __warp_cs_2);
             
-            let (__warp_se_78) = WS1_READ_Uint256(__warp_se_77);
+            let (__warp_se_86) = WS1_READ_Uint256(__warp_se_85);
             
-            let (__warp_pse_3) = warp_add_unsafe256(__warp_se_78, Uint256(low=1, high=0));
+            let (__warp_pse_3) = warp_add_unsafe256(__warp_se_86, Uint256(low=1, high=0));
             
-            let (__warp_se_79) = WS3_INDEX_felt_to_Uint256(__warp_3__balanceOf, __warp_cs_2);
+            let (__warp_se_87) = WS3_INDEX_felt_to_Uint256(__warp_3__balanceOf, __warp_cs_2);
             
-            WS_WRITE0(__warp_se_79, __warp_pse_3);
+            WS_WRITE0(__warp_se_87, __warp_pse_3);
             
             warp_sub_unsafe256(__warp_pse_3, Uint256(low=1, high=0));
         
-        let (__warp_se_80) = WS2_INDEX_Uint256_to_felt(__warp_2__ownerOf, __warp_31_id);
+        let (__warp_se_88) = WS2_INDEX_Uint256_to_felt(__warp_2__ownerOf, __warp_31_id);
         
-        WS_WRITE1(__warp_se_80, __warp_30_to);
+        WS_WRITE1(__warp_se_88, __warp_30_to);
         
         Transfer_ddf252ad.emit(0, __warp_30_to, __warp_31_id);
         
@@ -804,61 +810,15 @@ namespace NFTCraft{
 }
 
 
-    @view
-    func tokenURI_c87b56dd{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr : felt}(tokenId : Uint256)-> (__warp_1_len : felt, __warp_1 : felt*){
-    alloc_locals;
-    let (local warp_memory : DictAccess*) = default_dict_new(0);
-    local warp_memory_start: DictAccess* = warp_memory;
-    dict_write{dict_ptr=warp_memory}(0,1);
-    with warp_memory{
-
-        
-        warp_external_input_check_int256(tokenId);
-        
-        let (__warp_se_0) = WM0_d_arr();
-        
-        let (__warp_se_1) = wm_to_calldata0(__warp_se_0);
-        
-        default_dict_finalize(warp_memory_start, warp_memory, 0);
-        
-        
-        return (__warp_se_1.len, __warp_se_1.ptr,);
-    }
-    }
-
-
     @external
-    func mint_40c10f19{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr : felt, bitwise_ptr : BitwiseBuiltin*}(__warp_2_to : felt, __warp_3_tokenId : Uint256)-> (){
+    func set_eccd65dc{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr : felt, bitwise_ptr : BitwiseBuiltin*}(__warp_4_x : Uint256, __warp_5_y : Uint256, __warp_6_z : Uint256, __warp_7_modelId : Uint256, __warp_8_textureId : Uint256)-> (){
     alloc_locals;
 
 
         
-        warp_external_input_check_int256(__warp_3_tokenId);
+        warp_external_input_check_int256(__warp_8_textureId);
         
-        warp_external_input_check_address(__warp_2_to);
-        
-        let (__warp_se_2) = warp_gt256(__warp_3_tokenId, Uint256(low=0, high=0));
-        
-        with_attr error_message("NFTCraft: tokenId invalid"){
-            assert __warp_se_2 = 1;
-        }
-        
-        NFTCraft._mint_4e6ec247(__warp_2_to, __warp_3_tokenId);
-        
-        
-        
-        return ();
-
-    }
-
-
-    @external
-    func set_606ce3bf{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr : felt, bitwise_ptr : BitwiseBuiltin*}(__warp_4_x : Uint256, __warp_5_y : Uint256, __warp_6_z : Uint256, __warp_7_tokenId : Uint256)-> (){
-    alloc_locals;
-
-
-        
-        warp_external_input_check_int256(__warp_7_tokenId);
+        warp_external_input_check_int256(__warp_7_modelId);
         
         warp_external_input_check_int256(__warp_6_z);
         
@@ -866,25 +826,33 @@ namespace NFTCraft{
         
         warp_external_input_check_int256(__warp_4_x);
         
-        let (__warp_se_3) = warp_lt256(__warp_4_x, Uint256(low=200, high=0));
+        let (__warp_se_0) = warp_lt256(__warp_4_x, Uint256(low=200, high=0));
         
         with_attr error_message("NFTCraft: x length invalid"){
-            assert __warp_se_3 = 1;
+            assert __warp_se_0 = 1;
         }
         
-        let (__warp_se_4) = warp_lt256(__warp_5_y, Uint256(low=200, high=0));
+        let (__warp_se_1) = warp_lt256(__warp_5_y, Uint256(low=200, high=0));
         
         with_attr error_message("NFTCraft: y length invalid"){
-            assert __warp_se_4 = 1;
+            assert __warp_se_1 = 1;
         }
         
-        let (__warp_se_5) = warp_lt256(__warp_6_z, Uint256(low=200, high=0));
+        let (__warp_se_2) = warp_lt256(__warp_6_z, Uint256(low=200, high=0));
         
         with_attr error_message("NFTCraft: z length invalid"){
-            assert __warp_se_5 = 1;
+            assert __warp_se_2 = 1;
         }
         
-        let (__warp_se_6) = WS1_INDEX_Uint256_to_warp_id(NFTCraft.__warp_0_objects, __warp_4_x);
+        let (__warp_se_3) = WS1_READ_Uint256(NFTCraft.__warp_3_totalSupply);
+        
+        let (__warp_se_4) = warp_add256(__warp_se_3, Uint256(low=1, high=0));
+        
+        let (__warp_se_5) = WS_WRITE0(NFTCraft.__warp_3_totalSupply, __warp_se_4);
+        
+        let (__warp_9_tokenId) = warp_sub256(__warp_se_5, Uint256(low=1, high=0));
+        
+        let (__warp_se_6) = WS1_INDEX_Uint256_to_warp_id(NFTCraft.__warp_0_locations, __warp_4_x);
         
         let (__warp_se_7) = WS0_READ_warp_id(__warp_se_6);
         
@@ -906,9 +874,9 @@ namespace NFTCraft{
                 
                 let (__warp_se_14) = get_caller_address();
                 
-                NFTCraft.transferFrom_23b872dd_internal(__warp_se_13, __warp_se_14, __warp_7_tokenId);
+                NFTCraft.transferFrom_23b872dd_internal(__warp_se_13, __warp_se_14, __warp_9_tokenId);
             
-            NFTCraft.set_606ce3bf_if_part1(__warp_7_tokenId, __warp_4_x, __warp_5_y, __warp_6_z);
+            NFTCraft.set_eccd65dc_if_part1(__warp_9_tokenId, __warp_4_x, __warp_5_y, __warp_6_z, __warp_7_modelId, __warp_8_textureId);
             
             let __warp_uv0 = ();
             
@@ -918,7 +886,7 @@ namespace NFTCraft{
         }else{
         
             
-            NFTCraft.set_606ce3bf_if_part1(__warp_7_tokenId, __warp_4_x, __warp_5_y, __warp_6_z);
+            NFTCraft.set_eccd65dc_if_part1(__warp_9_tokenId, __warp_4_x, __warp_5_y, __warp_6_z, __warp_7_modelId, __warp_8_textureId);
             
             let __warp_uv1 = ();
             
@@ -931,7 +899,99 @@ namespace NFTCraft{
 
 
     @view
-    func length_1f7b6d32{syscall_ptr : felt*, range_check_ptr : felt}()-> (__warp_8 : Uint256){
+    func tokenURI_c87b56dd{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr : felt}(tokenId : Uint256)-> (__warp_10_len : felt, __warp_10 : felt*){
+    alloc_locals;
+    let (local warp_memory : DictAccess*) = default_dict_new(0);
+    local warp_memory_start: DictAccess* = warp_memory;
+    dict_write{dict_ptr=warp_memory}(0,1);
+    with warp_memory{
+
+        
+        warp_external_input_check_int256(tokenId);
+        
+        let (__warp_se_23) = WM0_d_arr();
+        
+        let (__warp_se_24) = wm_to_calldata0(__warp_se_23);
+        
+        default_dict_finalize(warp_memory_start, warp_memory, 0);
+        
+        
+        return (__warp_se_24.len, __warp_se_24.ptr,);
+    }
+    }
+
+
+    @view
+    func locations_e27f67a3{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr : felt}(__warp_11__i0 : Uint256, __warp_12__i1 : Uint256, __warp_13__i2 : Uint256)-> (__warp_14 : Uint256){
+    alloc_locals;
+
+
+        
+        warp_external_input_check_int256(__warp_13__i2);
+        
+        warp_external_input_check_int256(__warp_12__i1);
+        
+        warp_external_input_check_int256(__warp_11__i0);
+        
+        let (__warp_se_25) = WS1_INDEX_Uint256_to_warp_id(NFTCraft.__warp_0_locations, __warp_11__i0);
+        
+        let (__warp_se_26) = WS0_READ_warp_id(__warp_se_25);
+        
+        let (__warp_se_27) = WS1_INDEX_Uint256_to_warp_id(__warp_se_26, __warp_12__i1);
+        
+        let (__warp_se_28) = WS0_READ_warp_id(__warp_se_27);
+        
+        let (__warp_se_29) = WS0_INDEX_Uint256_to_Uint256(__warp_se_28, __warp_13__i2);
+        
+        let (__warp_se_30) = WS1_READ_Uint256(__warp_se_29);
+        
+        
+        
+        return (__warp_se_30,);
+
+    }
+
+
+    @view
+    func modelIds_19e2a109{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr : felt}(__warp_15__i0 : Uint256)-> (__warp_16 : Uint256){
+    alloc_locals;
+
+
+        
+        warp_external_input_check_int256(__warp_15__i0);
+        
+        let (__warp_se_31) = WS0_INDEX_Uint256_to_Uint256(NFTCraft.__warp_1_modelIds, __warp_15__i0);
+        
+        let (__warp_se_32) = WS1_READ_Uint256(__warp_se_31);
+        
+        
+        
+        return (__warp_se_32,);
+
+    }
+
+
+    @view
+    func textureIds_deebb7e9{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr : felt}(__warp_17__i0 : Uint256)-> (__warp_18 : Uint256){
+    alloc_locals;
+
+
+        
+        warp_external_input_check_int256(__warp_17__i0);
+        
+        let (__warp_se_33) = WS0_INDEX_Uint256_to_Uint256(NFTCraft.__warp_2_textureIds, __warp_17__i0);
+        
+        let (__warp_se_34) = WS1_READ_Uint256(__warp_se_33);
+        
+        
+        
+        return (__warp_se_34,);
+
+    }
+
+
+    @view
+    func length_1f7b6d32{syscall_ptr : felt*, range_check_ptr : felt}()-> (__warp_19 : Uint256){
     alloc_locals;
 
 
@@ -944,32 +1004,16 @@ namespace NFTCraft{
 
 
     @view
-    func objects_601f97a3{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr : felt}(__warp_9__i0 : Uint256, __warp_10__i1 : Uint256, __warp_11__i2 : Uint256)-> (__warp_12 : Uint256){
+    func totalSupply_18160ddd{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr : felt}()-> (__warp_20 : Uint256){
     alloc_locals;
 
 
         
-        warp_external_input_check_int256(__warp_11__i2);
-        
-        warp_external_input_check_int256(__warp_10__i1);
-        
-        warp_external_input_check_int256(__warp_9__i0);
-        
-        let (__warp_se_22) = WS1_INDEX_Uint256_to_warp_id(NFTCraft.__warp_0_objects, __warp_9__i0);
-        
-        let (__warp_se_23) = WS0_READ_warp_id(__warp_se_22);
-        
-        let (__warp_se_24) = WS1_INDEX_Uint256_to_warp_id(__warp_se_23, __warp_10__i1);
-        
-        let (__warp_se_25) = WS0_READ_warp_id(__warp_se_24);
-        
-        let (__warp_se_26) = WS0_INDEX_Uint256_to_Uint256(__warp_se_25, __warp_11__i2);
-        
-        let (__warp_se_27) = WS1_READ_Uint256(__warp_se_26);
+        let (__warp_se_35) = WS1_READ_Uint256(NFTCraft.__warp_3_totalSupply);
         
         
         
-        return (__warp_se_27,);
+        return (__warp_se_35,);
 
     }
 
@@ -977,8 +1021,8 @@ namespace NFTCraft{
     @constructor
     func constructor{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr : felt}(){
     alloc_locals;
-    WARP_USED_STORAGE.write(9);
-    WARP_NAMEGEN.write(7);
+    WARP_USED_STORAGE.write(13);
+    WARP_NAMEGEN.write(9);
     let (local warp_memory : DictAccess*) = default_dict_new(0);
     local warp_memory_start: DictAccess* = warp_memory;
     dict_write{dict_ptr=warp_memory}(0,1);
@@ -1013,16 +1057,16 @@ namespace NFTCraft{
         
         let __warp_9_owner = 0;
         
-        let (__warp_se_28) = WS2_INDEX_Uint256_to_felt(NFTCraft.__warp_2__ownerOf, __warp_8_id);
+        let (__warp_se_36) = WS2_INDEX_Uint256_to_felt(NFTCraft.__warp_2__ownerOf, __warp_8_id);
         
-        let (__warp_pse_0) = WS2_READ_felt(__warp_se_28);
+        let (__warp_pse_0) = WS2_READ_felt(__warp_se_36);
         
         let __warp_9_owner = __warp_pse_0;
         
-        let (__warp_se_29) = warp_neq(__warp_pse_0, 0);
+        let (__warp_se_37) = warp_neq(__warp_pse_0, 0);
         
         with_attr error_message("NOT_MINTED"){
-            assert __warp_se_29 = 1;
+            assert __warp_se_37 = 1;
         }
         
         
@@ -1040,19 +1084,19 @@ namespace NFTCraft{
         
         warp_external_input_check_address(__warp_10_owner);
         
-        let (__warp_se_30) = warp_neq(__warp_10_owner, 0);
+        let (__warp_se_38) = warp_neq(__warp_10_owner, 0);
         
         with_attr error_message("ZERO_ADDRESS"){
-            assert __warp_se_30 = 1;
+            assert __warp_se_38 = 1;
         }
         
-        let (__warp_se_31) = WS3_INDEX_felt_to_Uint256(NFTCraft.__warp_3__balanceOf, __warp_10_owner);
+        let (__warp_se_39) = WS3_INDEX_felt_to_Uint256(NFTCraft.__warp_3__balanceOf, __warp_10_owner);
         
-        let (__warp_se_32) = WS1_READ_Uint256(__warp_se_31);
+        let (__warp_se_40) = WS1_READ_Uint256(__warp_se_39);
         
         
         
-        return (__warp_se_32,);
+        return (__warp_se_40,);
 
     }
 
@@ -1067,9 +1111,9 @@ namespace NFTCraft{
         
         warp_external_input_check_address(__warp_14_spender);
         
-        let (__warp_se_40) = WS2_INDEX_Uint256_to_felt(NFTCraft.__warp_2__ownerOf, __warp_15_id);
+        let (__warp_se_48) = WS2_INDEX_Uint256_to_felt(NFTCraft.__warp_2__ownerOf, __warp_15_id);
         
-        let (__warp_16_owner) = WS2_READ_felt(__warp_se_40);
+        let (__warp_16_owner) = WS2_READ_felt(__warp_se_48);
         
         let __warp_rc_0 = 0;
         
@@ -1084,9 +1128,9 @@ namespace NFTCraft{
             assert __warp_rc_0 = 1;
         }
         
-        let (__warp_se_41) = WS2_INDEX_Uint256_to_felt(NFTCraft.__warp_4_getApproved, __warp_15_id);
+        let (__warp_se_49) = WS2_INDEX_Uint256_to_felt(NFTCraft.__warp_4_getApproved, __warp_15_id);
         
-        WS_WRITE1(__warp_se_41, __warp_14_spender);
+        WS_WRITE1(__warp_se_49, __warp_14_spender);
         
         Approval_8c5be1e5.emit(__warp_16_owner, __warp_14_spender, __warp_15_id);
         
@@ -1107,19 +1151,19 @@ namespace NFTCraft{
         
         warp_external_input_check_address(__warp_17_operator);
         
-        let (__warp_se_42) = get_caller_address();
+        let (__warp_se_50) = get_caller_address();
         
-        let (__warp_se_43) = WS5_INDEX_felt_to_warp_id(NFTCraft.__warp_5_isApprovedForAll, __warp_se_42);
+        let (__warp_se_51) = WS5_INDEX_felt_to_warp_id(NFTCraft.__warp_5_isApprovedForAll, __warp_se_50);
         
-        let (__warp_se_44) = WS0_READ_warp_id(__warp_se_43);
+        let (__warp_se_52) = WS0_READ_warp_id(__warp_se_51);
         
-        let (__warp_se_45) = WS4_INDEX_felt_to_felt(__warp_se_44, __warp_17_operator);
+        let (__warp_se_53) = WS4_INDEX_felt_to_felt(__warp_se_52, __warp_17_operator);
         
-        WS_WRITE1(__warp_se_45, __warp_18_approved);
+        WS_WRITE1(__warp_se_53, __warp_18_approved);
         
-        let (__warp_se_46) = get_caller_address();
+        let (__warp_se_54) = get_caller_address();
         
-        ApprovalForAll_17307eab.emit(__warp_se_46, __warp_17_operator, __warp_18_approved);
+        ApprovalForAll_17307eab.emit(__warp_se_54, __warp_17_operator, __warp_18_approved);
         
         
         
@@ -1202,11 +1246,11 @@ namespace NFTCraft{
 
 
         
-        let (__warp_se_81) = ws_dynamic_array_to_calldata0(NFTCraft.__warp_0_name);
+        let (__warp_se_89) = ws_dynamic_array_to_calldata0(NFTCraft.__warp_0_name);
         
         
         
-        return (__warp_se_81.len, __warp_se_81.ptr,);
+        return (__warp_se_89.len, __warp_se_89.ptr,);
 
     }
 
@@ -1217,11 +1261,11 @@ namespace NFTCraft{
 
 
         
-        let (__warp_se_82) = ws_dynamic_array_to_calldata0(NFTCraft.__warp_1_symbol);
+        let (__warp_se_90) = ws_dynamic_array_to_calldata0(NFTCraft.__warp_1_symbol);
         
         
         
-        return (__warp_se_82.len, __warp_se_82.ptr,);
+        return (__warp_se_90.len, __warp_se_90.ptr,);
 
     }
 
@@ -1234,13 +1278,13 @@ namespace NFTCraft{
         
         warp_external_input_check_int256(__warp_40__i0);
         
-        let (__warp_se_83) = WS2_INDEX_Uint256_to_felt(NFTCraft.__warp_4_getApproved, __warp_40__i0);
+        let (__warp_se_91) = WS2_INDEX_Uint256_to_felt(NFTCraft.__warp_4_getApproved, __warp_40__i0);
         
-        let (__warp_se_84) = WS2_READ_felt(__warp_se_83);
+        let (__warp_se_92) = WS2_READ_felt(__warp_se_91);
         
         
         
-        return (__warp_se_84,);
+        return (__warp_se_92,);
 
     }
 
@@ -1255,17 +1299,17 @@ namespace NFTCraft{
         
         warp_external_input_check_address(__warp_42__i0);
         
-        let (__warp_se_85) = WS5_INDEX_felt_to_warp_id(NFTCraft.__warp_5_isApprovedForAll, __warp_42__i0);
+        let (__warp_se_93) = WS5_INDEX_felt_to_warp_id(NFTCraft.__warp_5_isApprovedForAll, __warp_42__i0);
         
-        let (__warp_se_86) = WS0_READ_warp_id(__warp_se_85);
+        let (__warp_se_94) = WS0_READ_warp_id(__warp_se_93);
         
-        let (__warp_se_87) = WS4_INDEX_felt_to_felt(__warp_se_86, __warp_43__i1);
+        let (__warp_se_95) = WS4_INDEX_felt_to_felt(__warp_se_94, __warp_43__i1);
         
-        let (__warp_se_88) = WS2_READ_felt(__warp_se_87);
+        let (__warp_se_96) = WS2_READ_felt(__warp_se_95);
         
         
         
-        return (__warp_se_88,);
+        return (__warp_se_96,);
 
     }
 

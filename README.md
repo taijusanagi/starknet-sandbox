@@ -73,13 +73,13 @@ protostar declare ./build/nftcraft.json --network testnet
 ```
 
 ```
-Class hash: 0x028f79793e2931d2ad2f0ced1f74b1c000c3c8cdb7bc854e8d4088409b53f7fd
-StarkScan https://testnet.starkscan.co/class/0x028f79793e2931d2ad2f0ced1f74b1c000c3c8cdb7bc854e8d4088409b53f7fd
-Voyager   https://goerli.voyager.online/class/0x028f79793e2931d2ad2f0ced1f74b1c000c3c8cdb7bc854e8d4088409b53f7fd
+Class hash: 0x026ef61eb4efeb054a07b899ee6386e2156bb10de7c516adb2f51ca90654756c
+StarkScan https://testnet.starkscan.co/class/0x026ef61eb4efeb054a07b899ee6386e2156bb10de7c516adb2f51ca90654756c
+Voyager   https://goerli.voyager.online/class/0x026ef61eb4efeb054a07b899ee6386e2156bb10de7c516adb2f51ca90654756c
 
-Transaction hash: 0x02a7b196f851f42fd4acac698a4e671321b0b8b1076776e178c318b350ed0ac0
-StarkScan https://testnet.starkscan.co/tx/0x02a7b196f851f42fd4acac698a4e671321b0b8b1076776e178c318b350ed0ac0
-Voyager   https://goerli.voyager.online/tx/0x02a7b196f851f42fd4acac698a4e671321b0b8b1076776e178c318b350ed0ac0
+Transaction hash: 0x013f59e0075abfa2ace432abf20fed3e47dc43bbbd6b9998b9a435751be9e8dc
+StarkScan https://testnet.starkscan.co/tx/0x013f59e0075abfa2ace432abf20fed3e47dc43bbbd6b9998b9a435751be9e8dc
+Voyager   https://goerli.voyager.online/tx/0x013f59e0075abfa2ace432abf20fed3e47dc43bbbd6b9998b9a435751be9e8dc
 ```
 
 ### Deploy
@@ -89,13 +89,13 @@ protostar deploy ./build/nftcraft.json --network testnet
 ```
 
 ```
-Contract address: 0x02bfcf12986654535e212e396aae743ba47f541770e1da09cf04d356622e2b6c
-StarkScan https://testnet.starkscan.co/contract/0x02bfcf12986654535e212e396aae743ba47f541770e1da09cf04d356622e2b6c
-Voyager   https://goerli.voyager.online/contract/0x02bfcf12986654535e212e396aae743ba47f541770e1da09cf04d356622e2b6c
+Contract address: 0x044157a8c6e513884690c1651e2d0a57f898da98a36f71e14dcfc27cd3dd8894
+StarkScan https://testnet.starkscan.co/contract/0x044157a8c6e513884690c1651e2d0a57f898da98a36f71e14dcfc27cd3dd8894
+Voyager   https://goerli.voyager.online/contract/0x044157a8c6e513884690c1651e2d0a57f898da98a36f71e14dcfc27cd3dd8894
 
-Transaction hash: 0x00eee3649ff3fd7e84ae972d7ff7a041f61d2a6ea9f7c6ed9c9a74ec7d39b6c0
-StarkScan https://testnet.starkscan.co/tx/0x00eee3649ff3fd7e84ae972d7ff7a041f61d2a6ea9f7c6ed9c9a74ec7d39b6c0
-Voyager   https://goerli.voyager.online/tx/0x00eee3649ff3fd7e84ae972d7ff7a041f61d2a6ea9f7c6ed9c9a74ec7d39b6c0
+Transaction hash: 0x015f3562e88ad6c4343ff0c1be506c02a437a657a6d2a13253a07bae14fc3b6b
+StarkScan https://testnet.starkscan.co/tx/0x015f3562e88ad6c4343ff0c1be506c02a437a657a6d2a13253a07bae14fc3b6b
+Voyager   https://goerli.voyager.online/tx/0x015f3562e88ad6c4343ff0c1be506c02a437a657a6d2a13253a07bae14fc3b6b
 ```
 
 ## Session key Implementation

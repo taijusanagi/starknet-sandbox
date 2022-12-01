@@ -34,13 +34,13 @@ export default function Home() {
   const [isSupportsSession, setIsSupportsSession] = useState(false);
   const [network, setNetwork] = useState<Network>("testnet");
 
-  const [inputSetTokenId, setInputSetTokenId] = useState("0");
   const [myNFTs, setMyNFTs] = useState<string[]>([]);
-  const [inputMintTokenId, setInputMintTokenId] = useState("0");
 
   const [inputX, setInputX] = useState("0");
   const [inputY, setInputY] = useState("0");
   const [inputZ, setInputZ] = useState("0");
+  const [inputModelId, setInputModelId] = useState("0");
+  const [inputTextureId, setInputTextureId] = useState("0");
 
   const connectWallet = async () => {
     try {
@@ -51,27 +51,6 @@ export default function Home() {
       setAccount(starknet?.account);
     } catch (e) {
       console.error(e);
-    }
-  };
-
-  const increaseBalance = async () => {
-    if (!account) {
-      throw new Error("account is not defined");
-    }
-
-    if (sessionAccount) {
-      throw new Error("not implemented");
-      // const erc20Contract = new Contract(Erc20Abi as Abi, ethAddress, sessionAccount);
-      // const result = await erc20Contract.transfer(account.address, parseInputAmountToUint256("0.000000001"));
-      // console.log(result);
-      // await sessionAccount.execute({
-      //   contractAddress: deployments[network],
-      //   entrypoint: "increase_balance",
-      //   calldata: [toFelt(1)],
-      // });
-    } else {
-      const contract = new Contract(contractAbi as any, deployments[network], account);
-      await contract.mint_40c10f19(toFelt(account.address), [toFelt(inputMintTokenId), ""]);
     }
   };
 
@@ -100,9 +79,6 @@ export default function Home() {
     const mine = entries.filter(([, value]) => value === account.address).map(([tokenId]) => tokenId);
     console.log(mine);
     setMyNFTs(mine);
-    if (mine.length > 0) {
-      setInputSetTokenId(mine[0]);
-    }
   };
 
   const enableSessionKey = async () => {
@@ -138,13 +114,12 @@ export default function Home() {
       throw new Error("account is not defined");
     }
     const contract = new Contract(contractAbi as any, deployments[network], account);
-    console.log([toFelt(inputX), ""], [toFelt(inputY), ""], [toFelt(inputZ), ""], [toFelt(inputSetTokenId), ""]);
-
-    await contract.set_606ce3bf(
+    await contract.set_eccd65dc(
       [toFelt(inputX), ""],
       [toFelt(inputY), ""],
       [toFelt(inputZ), ""],
-      [toFelt(inputSetTokenId), ""]
+      [toFelt(inputModelId), ""],
+      [toFelt(inputTextureId), ""]
     );
   };
 
@@ -212,12 +187,6 @@ export default function Home() {
           <p>NFTCraft</p>
           <p>{deployments[network]}</p>
           <div>
-            <p>Mint</p>
-            <input value={inputMintTokenId} onChange={(e) => setInputMintTokenId(e.target.value)}></input>
-            <button onClick={increaseBalance}>mint</button>
-            <button onClick={getNFTs}>Get NFTs</button>
-          </div>
-          <div>
             <p>Map</p>
             <p>X</p>
             <input value={inputX} onChange={(e) => setInputX(e.target.value)} max={200} type={"number"} />
@@ -225,23 +194,16 @@ export default function Home() {
             <input value={inputY} onChange={(e) => setInputY(e.target.value)} max={200} type={"number"} />
             <p>Z</p>
             <input value={inputZ} onChange={(e) => setInputZ(e.target.value)} max={200} type={"number"} />
-            <p>Token Id (run get NFTs)</p>
-            <select
-              disabled={myNFTs.length === 0}
-              value={inputSetTokenId}
-              onChange={(e) => setInputSetTokenId(e.target.value)}
-            >
-              {myNFTs.map((tokenId) => {
-                return (
-                  <option key={tokenId} value={tokenId}>
-                    {tokenId}
-                  </option>
-                );
-              })}
-            </select>
-            <button disabled={myNFTs.length === 0} onClick={setMap}>
-              Set
-            </button>
+            <p>Model ID</p>
+            <input value={inputModelId} onChange={(e) => setInputModelId(e.target.value)} max={200} type={"number"} />
+            <p>Texture ID</p>
+            <input
+              value={inputTextureId}
+              onChange={(e) => setInputTextureId(e.target.value)}
+              max={200}
+              type={"number"}
+            />
+            <button onClick={setMap}>Set</button>
             <button onClick={getMap}>Get</button>
           </div>
         </div>
