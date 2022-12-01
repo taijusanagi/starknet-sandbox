@@ -4,6 +4,7 @@ lib-path = "lib"
 
 [contracts]
 main = ["src/main.cairo"]
+nftcraft = ["src/nftcraft.cairo"]
 
 # https://github.com/Shard-Labs/starknet-devnet
 # ["profile.devnet.protostar.deploy"]
